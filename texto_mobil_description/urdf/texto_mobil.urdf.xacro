@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<robot name="texto_mobil" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <material name="cyan">
+    <color rgba="0 1 1 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <xacro:property name="base_width" value="0.48"/>
+  <xacro:property name="base_length" value="0.35"/>
+  <xacro:property name="base_height" value="0.36"/>
+
+  <xacro:property name="wheel_radius" value="0.08"/>
+  <xacro:property name="wheel_length" value="0.04"/>
+
+  <!-- Ana gövde -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${base_width} ${base_length} ${base_height}"/>
+      </geometry>
+      <origin xyz="0 0 ${wheel_radius + (base_height / 2)}" rpy="0 0 0"/>
+      <material name="cyan"/>
+    </visual>
+    <inertial>
+      <mass value="5.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <!-- Tekerlekler -->
+  <link name="left_front_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${wheel_radius}" rpy="${pi/2} 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <link name="left_rear_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${wheel_radius}" rpy="${pi/2} 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <link name="right_front_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${wheel_radius}" rpy="${pi/2} 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <link name="right_rear_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${wheel_radius}" rpy="${pi/2} 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Eklemler -->
+  <joint name="base_left_front_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_front_wheel_link"/>
+    <origin xyz="${(base_width / 2) - 0.1} ${(base_length / 2) + (wheel_length / 2)} 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="base_left_rear_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_rear_wheel_link"/>
+    <origin xyz="${-(base_width / 2) + 0.1} ${(base_length / 2) + (wheel_length / 2)} 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="base_right_front_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_front_wheel_link"/>
+    <origin xyz="${(base_width / 2) - 0.1} ${-(base_length / 2) - (wheel_length / 2)} 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="base_right_rear_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_rear_wheel_link"/>
+    <origin xyz="${-(base_width / 2) + 0.1} ${-(base_length / 2) - (wheel_length / 2)} 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- LIDAR LINK -->
+  <link name="laser">
+    <visual>
+      <geometry>
+        <cylinder radius="0.03" length="0.02"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- LIDAR JOINT -->
+  <joint name="base_to_laser" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+  </joint>
+
+</robot>
